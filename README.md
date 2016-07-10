@@ -6,7 +6,13 @@ This grew out of some playing around on [HyperDev](https://hyperdev.com) to get 
 
 This is not an impressive app in any way. Really, the best thing I can say about it is that it runs, renders HTML, can successfully talk to a SQL database, all tasks I can do with my eyes closed in Ruby but actually had to learn in Node.
 
-That said, there are a few nascent opinions expressed in this code:
+## The Stack
+
+In addition to Express, I'm using:
+* PostgreSQL and the `pg` module, for DB access
+* `nunjucks` for HTML templates
+* Moment.js for date/time formatting & manipulation
+* `dotenv` to load local environment variables
 
 ## Database stuff
 
