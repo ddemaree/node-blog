@@ -1,5 +1,11 @@
 'use strict';
 
+console.log("PG connections will happen on %s", process.env.DATABASE_URL);
+
+if(!process.env.DATABASE_URL) {
+  console.log("WARNING! DATABASE_URL is undefined");
+}
+
 var pg = require('pg');
 pg.defaults.ssl = true;
 var Item = require('./models/item');
@@ -77,10 +83,10 @@ function findItemByShortID(shortID){
   return new Promise(function(resolve, reject){
     pg.connect(process.env.DATABASE_URL, function(err, client, done){
       if(err) throw err;
-      
+
       client.query("SELECT * FROM items WHERE attributes->>'id' = $1 LIMIT 1", [shortID], function(err, result){
         if(err) throw err;
-        
+
         if(result.rowCount === 0){
           reject(Error("Not found"));
         }
@@ -98,7 +104,7 @@ function findItemByUUID(uuid) {
   return new Promise(function(resolve, reject){
     pg.connect(process.env.DATABASE_URL, function(err, client, done){
       if(err) throw err;
-      
+
       client.query("SELECT * FROM items WHERE (id = $1) LIMIT 1;", [uuid], function(err, result){
         if(err) {
           reject(Error("Not found"));

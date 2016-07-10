@@ -1,11 +1,39 @@
 // server.js
 // where your node app starts
 
+try {
+  require("dotenv").config();
+} catch(error) {
+  console.error("Error was %s", error);
+}
+
 // init
-var H = require("hyperweb");
+var express = require('express');
+var app = express();
+app.use(express.static('public'));
+
+// TODO: Learn more about what this does, besides the obvious
+bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.text());
+
+var nunjucks = require('nunjucks');
+nunjucks.configure('views', {
+  autoescape: true,
+  express: app
+});
+
+app.set('port', process.env.PORT || 3000);
+app.server = app.listen(app.get('port'), function() {
+  return console.log('DD app is running on port', app.get('port'));
+});
+
+
 var pgstore = require("./pgstore");
 var Item = require("./models/item");
-app = H.blastOff();
 
 // Handle errors
 app.use(function(err, req, res, next){
@@ -38,23 +66,10 @@ app.post("/posts", function (request, response) {
   );
 });
 
-app.get("/p/:postShortId", function(req, res){
-  pgstore.findItemByShortID(req.params.postShortId).then(
-    function(itemRow){
-      res.redirect("/posts/" + itemRow.id);
-    },
-    function(err){
-      handleNotFound(err, res);
-    }
-  );
-});
-
 app.get("/posts/:postId", function(req, res){
-  console.log("Trying to find item with id %s", req.params.postId);
   pgstore.findItem(req.params.postId).then(
     function(itemRow){
-      console.log(itemRow);
-      response.render("single-post.html", {
+      res.render("single-post.html", {
         item: itemRow,
         title: itemRow.title
       });
@@ -63,6 +78,22 @@ app.get("/posts/:postId", function(req, res){
       handleNotFound(err, res);
     }
   );
+});
+
+app.get("/p/:postShortId", function(req, res){
+  try {
+    pgstore.findItemByShortID(req.params.postShortId).then(
+      function(itemRow){
+        res.redirect("/posts/" + itemRow.id);
+      },
+      function(err){
+        handleNotFound(err, res);
+      }
+    );
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
 });
 
 function handleNotFound(err, res) {
