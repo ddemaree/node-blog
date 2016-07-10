@@ -1,9 +1,8 @@
 // Require .env locally, if present (HyperDev will do this automatically)
 require("dotenv").config();
 
-var pgstore = require("./pgstore");
+var db = require("./db");
 var Item = require("./models/item");
-
 var app = require("./lib/boot").setup();
 
 // Handle errors
@@ -14,7 +13,7 @@ app.use(function(err, req, res, next){
 // *.* ROUTES *.* //
 
 app.get("/", function (request, response) {
-  pgstore.getAllItems().then(function(allItems){
+  db.getAllItems().then(function(allItems){
     response.render('index.html', {
       title: "Welcome To HyperDev",
       items: allItems
@@ -27,7 +26,7 @@ app.post("/posts", function (request, response) {
   var newPost = Item.initializeNewItem(request.body);
   console.log(newPost);
 
-  pgstore.createItem(newPost).then(
+  db.createItem(newPost).then(
     function(result){
       response.redirect("/");
     },
@@ -38,7 +37,7 @@ app.post("/posts", function (request, response) {
 });
 
 app.get("/posts/:postId", function(req, res){
-  pgstore.findItem(req.params.postId).then(
+  db.findItem(req.params.postId).then(
     function(itemRow){
       res.render("single-post.html", {
         item: itemRow,
@@ -53,7 +52,7 @@ app.get("/posts/:postId", function(req, res){
 
 app.get("/p/:postShortId", function(req, res){
   try {
-    pgstore.findItemByShortID(req.params.postShortId).then(
+    db.findItemByShortID(req.params.postShortId).then(
       function(itemRow){
         res.redirect("/posts/" + itemRow.id);
       },
