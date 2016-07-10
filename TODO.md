@@ -1,0 +1,2 @@
+- [] Cast attributes.postedAt to ISO timestamp in PG to order posts
+- [] Detail view

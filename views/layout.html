@@ -1,0 +1,34 @@
+<!-- view template -->
+<!-- called from your routes in server.js -->
+<!-- templating docs: http://mozilla.github.io/nunjucks/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <meta name="description" content="A cool thing made with HyperWeb">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      {% block header %}
+      <h1>
+        My Example Blog
+      </h1>
+      {% endblock %}
+    </header>
+
+    {% block main %}
+    {% endblock %}
+    
+    <footer>
+      <a href="https://hyperdev.com/#!/project/coffee-wave">
+        Remix this in HyperDev
+      </a>
+    </footer>    
+    
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!-- view template -->
+<!-- called from your routes in server.js -->
+<!-- templating docs: http://mozilla.github.io/nunjucks/ -->
+{% extends "layout.html" %}
+
+{% block main %}
+<section class="add-new-post">
+  <h2>
+    Add A Post
+  </h2>
+  <form action="/posts" method="post">
+    <label>
+      <h3>
+        Blog Title
+      </h3>
+      <input name="title" placeholder="A tantalizing title">
+    </label>
+    <label>
+      <h3>
+        Blog Text
+      </h3>
+      <textarea name="body" placeholder="Some pithy prose"></textarea>
+    </label>
+    <button type="submit" class="button">
+      Create Post
+    </button>
+  </form>
+</section>
+
+<hr>
+
+<h2>Archives</h2>
+<main>
+  {% for item in items %}
+    {% block item %}
+    <article>
+      <h2><a href="{{item.permalink}}">{{item.title}}</a> (<a href="/p/{{item.attributes.id}}">{{item.attributes.id}}</a>)</h2>
+      <p>{{item.getPostedDate()}}</p>
+      <p>{{item.body_text}}</p>
+    </article>
+    <hr>
+    {% endblock %}
+  {% endfor %}
+</main>
+{% endblock %}

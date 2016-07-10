@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<main>
+  <p><a href="/">&larr; Back to home</a></p>
+  <article>
+    <h2><a href="/items/{{item.id}}">{{item.title}}</a></h2>
+    {{item.body_text}}
+  </article>
+</main>
+{% endblock %}
