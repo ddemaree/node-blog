@@ -1,39 +1,10 @@
-// server.js
-// where your node app starts
-
-try {
-  require("dotenv").config();
-} catch(error) {
-  console.error("Error was %s", error);
-}
-
-// init
-var express = require('express');
-var app = express();
-app.use(express.static('public'));
-
-// TODO: Learn more about what this does, besides the obvious
-bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-app.use(bodyParser.json());
-app.use(bodyParser.text());
-
-var nunjucks = require('nunjucks');
-nunjucks.configure('views', {
-  autoescape: true,
-  express: app
-});
-
-app.set('port', process.env.PORT || 3000);
-app.server = app.listen(app.get('port'), function() {
-  return console.log('DD app is running on port', app.get('port'));
-});
-
+// Require .env locally, if present (HyperDev will do this automatically)
+require("dotenv").config();
 
 var pgstore = require("./pgstore");
 var Item = require("./models/item");
+
+var app = require("./lib/boot").setup();
 
 // Handle errors
 app.use(function(err, req, res, next){
