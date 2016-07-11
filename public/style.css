@@ -2,19 +2,36 @@
 /* called by your view template */
 /* p.s. vendor prefixes are added automatically */
 
+@import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,600i';
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: helvetica, arial, sans-serif;
+  background-color: #ccc;
+  font-family: 'Source Sans Pro', helvetica, arial, sans-serif;
   margin: 25px;
 }
 
+.container {
+  background-color: white;
+  padding: 20px;
+  margin: 0 auto;
+  width: calc(100% - 40px);
+  max-width: 57rem;
+  box-shadow: 2px 2px 0 #999;
+}
+
 h1 {
-  font-weight: bold;
+  font-weight: 300;
   font-size: 48px;
   color: pink;
+}
+
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
 h3 {

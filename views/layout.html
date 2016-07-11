@@ -13,22 +13,25 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
-    <header>
-      {% block header %}
-      <h1>
-        My Example Blog
-      </h1>
+    <div class="container">
+      <header>
+        {% block header %}
+        <h1>
+          My Example Blog
+        </h1>
+        {% endblock %}
+      </header>
+  
+      {% block main %}
       {% endblock %}
-    </header>
-
-    {% block main %}
-    {% endblock %}
+      
+      <footer>
+        <a href="https://hyperdev.com/#!/project/coffee-wave">
+          Remix this in HyperDev
+        </a>
+      </footer>
     
-    <footer>
-      <a href="https://hyperdev.com/#!/project/coffee-wave">
-        Remix this in HyperDev
-      </a>
-    </footer>    
+    </div>
     
   </body>
 </html>
