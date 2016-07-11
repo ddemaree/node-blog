@@ -8,33 +8,7 @@ console.log(redisClient.get('helloWorld'));
 var db = require("./db");
 var Item = require("./models/item");
 var app = require("./lib/boot").setup();
-
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'passwd'
-  },
-  function(username, password, done) {
-    if(password == process.env.ADMIN_PASSWORD){
-      done(null, {email: username});
-    } else {
-      done(null, false);
-    }
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, {email: id});
-});
-
-app.use(passport.initialize());
-app.use(passport.session());
+var passport = require('./lib/authentication').setup(app);
 
 // Handle errors
 app.use(function(err, req, res, next){
