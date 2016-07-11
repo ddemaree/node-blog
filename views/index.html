@@ -31,7 +31,7 @@
   {% for item in items %}
     {% block item %}
     <article>
-      <h2><a href="{{item.permalink}}">{{item.title}}</a> (<a href="/p/{{item.attributes.id}}">{{item.attributes.id}}</a>)</h2>
+      <h3><a href="{{item.permalink}}">{{item.title}}</a> (<a href="/p/{{item.attributes.id}}">{{item.attributes.id}}</a>)</h3>
       <p>{{item.getPostedDate()}}</p>
       <p>{{item.body_text}}</p>
     </article>
