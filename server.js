@@ -1,13 +1,49 @@
 // Require .env locally, if present (HyperDev will do this automatically)
 require("dotenv").config();
 
+var redis = require("redis");
+var redisClient = redis.createClient({url: process.env.REDIS_URL});
+console.log(redisClient.get('helloWorld'));
+
 var db = require("./db");
 var Item = require("./models/item");
 var app = require("./lib/boot").setup();
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'passwd'
+  },
+  function(username, password, done) {
+    if(password == process.env.ADMIN_PASSWORD){
+      done(null, {email: username});
+    } else {
+      done(null, false);
+    }
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.email);
+});
+
+passport.deserializeUser(function(id, done) {
+  done(null, {email: id});
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Handle errors
 app.use(function(err, req, res, next){
   handleError(err, res);
+});
+
+app.use(function(req, res, next){
+  console.log("User: %s", req.user);
+  next();
 });
 
 // *.* ROUTES *.* //
@@ -16,10 +52,27 @@ app.get("/", function (request, response) {
   db.getAllItems().then(function(allItems){
     response.render('index.html', {
       title: "Welcome To HyperDev",
-      items: allItems
+      items: allItems,
+      loggedInUser: request.user
     });
   });
 });
+
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/login', function(req, res){
+  res.render('login.html');
+});
+
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+);
 
 app.post("/posts", function (request, response) {
   // TODO: This function does stuff that's not strictly necessary in the pg world
