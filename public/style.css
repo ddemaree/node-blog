@@ -18,7 +18,7 @@ body {
   background-color: white;
   padding: 20px;
   margin: 0 auto;
-  width: calc(100% - 40px);
+  width: calc(100% - 0px);
   max-width: 57rem;
   box-shadow: 2px 2px 0 #999;
 }

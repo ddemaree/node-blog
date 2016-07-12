@@ -1,13 +1,15 @@
 // Require .env locally, if present (HyperDev will do this automatically)
 require("dotenv").config();
 
-var redis = require("redis");
-var redisClient = redis.createClient({url: process.env.REDIS_URL});
-console.log(redisClient.get('helloWorld'));
+// var redis = require("redis");
+// var redisClient = redis.createClient({url: process.env.REDIS_URL});
+// console.log(redisClient.get('helloWorld'));
 
 var db = require("./db");
 var Item = require("./models/item");
-var app = require("./lib/boot").setup();
+
+var express = require('express');
+var app = require("./lib/boot").setup(express);
 var passport = require('./lib/authentication').setup(app);
 
 // Handle errors
@@ -19,6 +21,25 @@ app.use(function(req, res, next){
   console.log("User: %s", req.user);
   next();
 });
+
+function requireLogin(req, res, next){
+  if(req.user) {
+    next();
+  } else {
+    req.format({
+      'html': function(){
+        req.redirect("/login");
+      },
+      'default': function(){
+        req.status(401).send("Not allowed!");
+      }
+    })
+  }
+}
+
+var admin = require('./admin')(express, passport);
+app.use('/admin', admin);
+
 
 // *.* ROUTES *.* //
 
@@ -32,23 +53,12 @@ app.get("/", function (request, response) {
   });
 });
 
-
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
 
-app.get('/login', function(req, res){
-  res.render('login.html');
-});
-
-app.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: true })
-);
-
-app.post("/posts", function (request, response) {
+app.post("/posts", requireLogin, function (request, response) {
   // TODO: This function does stuff that's not strictly necessary in the pg world
   var newPost = Item.initializeNewItem(request.body);
   console.log(newPost);
