@@ -6,7 +6,17 @@ This grew out of some playing around on [HyperDev](https://hyperdev.com) to get 
 
 This is not an impressive app in any way. Really, the best thing I can say about it is that it runs, renders HTML, can successfully talk to a SQL database, all tasks I can do with my eyes closed in Ruby but actually had to learn in Node.
 
+<<<<<<< HEAD
 You can [view the live web site here](https://coffee-wave.hyperdev.space), or [you can view or remix the project in HyperDev](https://hyperdev.com/#!/project/coffee-wave).
+=======
+## Running this app
+
+Expected configuration env vars:
+
+* `DATABASE_URL` for a Postgres database that supports the JSON data type
+* `REDIS_URL` for a Redis instance (not used atm)
+* `ADMIN_PASSWORD` is exactly what it sounds like
+>>>>>>> 1f5fcdf009ec07d8cf5797eb8c9ff3abc323998f
 
 ## The Stack
 

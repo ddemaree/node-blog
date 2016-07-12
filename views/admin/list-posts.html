@@ -1,0 +1,17 @@
+{% extends "../layout.html" %}
+
+{% macro itemTableRow(item) %}
+<div id="item-{{ item.uuid }}" class="item-row">
+  <a href="/admin/posts/{{ item.uuid }}">{{ item.title | d("Untitled post") }}</a>
+</div>
+{% endmacro %}
+
+{% block main %}
+<h2>List all items</h2>
+
+{% for item in items %}
+{{ itemTableRow(item) }}
+{{ item.attributes | dump }}
+{% endfor %}
+
+{% endblock %}
