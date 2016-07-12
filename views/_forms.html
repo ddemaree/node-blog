@@ -1,0 +1,11 @@
+{% macro input(name, value='', type='text', placeholder='', id='') %}
+<div class="form-field">
+  <input id="{{ id }}" type="{{ type }}" name="{{ name }}" value="{{ value | escape }}"{% if placeholder %} placeholder="{{ placeholder | escape }}"{% endif%}>
+</div>
+{% endmacro %}
+
+{% macro textarea(name, value='', id='') %}
+<div class="form-field">
+  <textarea id='{{ id }}' name="{{ name }}" rows="8" cols="40">{{ value | escape }}</textarea>
+</div>
+{% endmacro %}

@@ -1,20 +1,20 @@
-{% extends '../layout.html' %}
+{% extends './admin-layout.html' %}
 {% import '../_forms.html' as forms %}
 
 {% block main %}
 <form action="/admin/posts" method="post">
   <h2>New post</h2>
-  
+
   <div class="field-row">
     <label for="post-title">Title</label>
-    {{ forms.formField("title") }}
+    {{ forms.input("post[title]", placeholder='My Awesome Post', id="post-title") }}
   </div>
-  
+
   <div class="field-row">
     <label for="post-body">Body</label>
-    {{ forms.formField("body", type="textarea") }}
+    {{ forms.textarea("post[body]", id="post-body") }}
   </div>
-    
+
   <div class="actions">
     <button type="submit">Create Post</button>
   </div>

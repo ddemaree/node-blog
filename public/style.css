@@ -23,6 +23,22 @@ body {
   box-shadow: 2px 2px 0 #999;
 }
 
+body.admin {
+  background-color: white;
+  margin: 0px;
+}
+
+body.admin .container {
+  box-shadow: none;
+  max-width: none;
+}
+
+body.admin header nav {
+  width: 20%;
+  max-width: 10em;
+  background-color: #ccc;
+}
+
 h1 {
   font-weight: 300;
   font-size: 48px;

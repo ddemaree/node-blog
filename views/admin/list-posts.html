@@ -1,9 +1,10 @@
-{% extends "../layout.html" %}
+{% extends "./admin-layout.html" %}
 
 {% macro itemTableRow(item) %}
 <div id="item-{{ item.uuid }}" class="item-row">
-  <a href="/admin/posts/{{ item.uuid }}">{{ item.title | d("Untitled post") }}</a>
-</div>
+  <a href="/admin/posts/{{ item.uuid }}">{{ item.title | d("Untitled post", true) }}</a>
+  <code><pre>{{ item.attributes | dump }}</pre></code>
+</div> 
 {% endmacro %}
 
 {% block main %}
@@ -11,7 +12,6 @@
 
 {% for item in items %}
 {{ itemTableRow(item) }}
-{{ item.attributes | dump }}
 {% endfor %}
 
 {% endblock %}

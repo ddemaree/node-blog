@@ -1,0 +1,37 @@
+<!-- view template -->
+<!-- called from your routes in server.js -->
+<!-- templating docs: http://mozilla.github.io/nunjucks/ -->
+
+{% macro navigationItem(key, label, url) %}
+<li><a href="{{ url }}" class="nav-{{key}}">{{ label }}</a></li>
+{% endmacro %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title | d('My Awesome Blog') }}</title>
+    <meta name="description" content="A cool thing made with HyperWeb">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="admin {{ bodyClass | d('default') }}">
+    <div class="container">
+      <header>
+        {% block nav %}
+        <nav>
+        <ul>
+          {{ navigationItem('list-posts', "Show All Posts", "/admin") }}
+          {{ navigationItem('new-post', "New Post", "/admin/posts/new") }}
+        </ul>
+        </nav>
+        {% endblock %}
+      </header>
+
+      {% block main %}
+      {% endblock %}
+    </div>
+
+  </body>
+</html>

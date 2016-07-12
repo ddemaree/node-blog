@@ -18,17 +18,16 @@ module.exports = function(express, passport){
     }
   }
 
-  
   admin.get("/login", function(req, res){
     res.render('admin/login.html');
   });
-  
-  admin.post('/login',
-    passport.authenticate('local', { successRedirect: '',
-                                    failureRedirect: 'login',
-                                    failureFlash: true })
+
+  admin.post("/login",
+    passport.authenticate('local', { successRedirect: '/admin',
+                                     failureRedirect: '/admin/login',
+                                     failureFlash: true })
   );
-  
+
   admin.get("/logout", function(req, res){
     req.logout();
     res.redirect("./");
@@ -41,16 +40,25 @@ module.exports = function(express, passport){
       });
     });
   });
-  
+
   admin.get("/posts/new", requireLogin, function(req, res){
     res.render("admin/new-post.html");
   });
-  
+
+  function initializeNewPost(params) {
+    var moment = require('moment');
+    console.log(params);
+    params.id = Item.makeShortIDString();
+    params.postedAtString = moment().toISOString();
+    params.postedAt = moment().unix();
+    return params;
+  }
+
   admin.post("/posts", requireLogin, function (request, response) {
     // TODO: This function does stuff that's not strictly necessary in the pg world
-    var newPost = Item.initializeNewItem(request.body);
+    var newPost = initializeNewPost(request.body);
     console.log(newPost);
-  
+
     db.createItem(newPost).then(
       function(result){
         response.redirect("/");
@@ -60,6 +68,6 @@ module.exports = function(express, passport){
       }
     );
   });
-  
+
   return admin;
 }
