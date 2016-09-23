@@ -7,7 +7,6 @@ if(!process.env.DATABASE_URL) {
 }
 
 var pg = require('pg');
-// pg.defaults.ssl = true;
 var Item = require('./models/item');
 
 function getAllItems_p() {

@@ -1,12 +1,24 @@
 // Require .env locally, if present (HyperDev will do this automatically)
 require("dotenv").config();
 
-// var redis = require("redis");
-// var redisClient = redis.createClient({url: process.env.REDIS_URL});
-// console.log(redisClient.get('helloWorld'));
+// var db = require("./db");
+// var Item = require("./models/item");
 
-var db = require("./db");
-var Item = require("./models/item");
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(process.env.DATABASE_URL);
+
+var Item = sequelize.define('items', {
+  id:         { type: Sequelize.DataTypes.UUID },
+  attributes: { type: Sequelize.DataTypes.JSON },
+  body_text:  { type: Sequelize.DataTypes.STRING },
+  title:      { type: Sequelize.DataTypes.STRING }
+}, {
+  tableName: 'items'
+});
+Item.sync()
+then(function(){
+  console.log("Created items table")
+});
 
 var express = require('express');
 var app = require("./lib/boot").setup(express);
@@ -44,7 +56,7 @@ app.use('/admin', admin);
 // *.* ROUTES *.* //
 
 app.get("/", function (request, response) {
-  db.getAllItems().then(function(allItems){
+  Item.findAll().then(function(allItems){
     response.render('index.html', {
       title: "Welcome To HyperDev",
       items: allItems,
